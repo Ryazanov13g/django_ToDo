@@ -1,0 +1,26 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+  <div class="container">
+    {% if not object %}
+      <form action="{% url 'posts:post_create' %}" method="post">
+    {% else %}
+      <form action="{% url 'posts:post_update' object.id %}" method="post">
+    {% endif %}
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="{{ form.name.id_for_label }}" class="form-label">Название заметки</label>
+          {{ form.name }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.description.id_for_label }}" class="form-label">Описание заметки</label>
+          {{ form.description }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.actuality.id_for_label }}" class="form-check-label">Актуальность заметки</label>
+          {{ form.actuality }}
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% for post in object_list %}
+          <div class="col">
+            <div class="card shadow-sm">
+              <h2 class="card-text">{{ post.name }}</h2>
+              <p class="card-text">{{ post.description }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  {% if post.actuality %}
+                    <a class="btn btn-sm btn-success"
+                       href="{% url 'posts:post_not_actuality' %}">
+                       Выполнено
+                    </a>
+                  {% endif %}
+                  <a class="btn btn-sm btn-warning"
+                     href="{% url 'posts:post_update' post.id %}">
+                     Изменить
+                  </a>
+<!--                  <button type="button" class="btn btn-sm btn-outline-secondary">Изменить</button>-->
+                  <a class="btn btn-sm btn-danger"
+                     href="{% url 'posts:post_delete' post.id %}">
+                     Удалить
+                  </a>
+                </div>
+                {% if post.actuality %}
+                  <small class="text-muted">Не выполнено</small>
+                {% else %}
+                  <small class="text-muted">Выполнено</small>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% if is_paginated %}
+    <div class="container">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item {% if not page_obj.has_previous %} disabled {% endif %}">
+              <a class="page-link"
+                 href="?page={{ page_obj.previous_page_number }}"
+                 aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+          {% endif %}
+          {% for page in paginator.page_range %}
+            {% if page_obj.number == page %}
+              <li class="page-item disabled"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+            {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2  %}
+              <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+            {% endif %}
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li class="page-item {% if not page_obj.has_next %} disabled {% endif %}">
+              <a class="page-link"
+                 href="?page={{ page_obj.next_page_number }}"
+                 aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+  <section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">ToDo</h1>
+        <p class="lead text-muted">Заметки на каждый день</p>
+        <p>
+          {% if not user.is_authenticated %}
+            <a href="{% url 'users:login' %}" class="btn btn-primary my-2">Войти</a>
+            <a href="{% url 'users:registration' %}" class="btn btn-secondary my-2">Зарегистрироваться</a>
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  </section>
+{% endblock %}
